@@ -1,0 +1,6 @@
+﻿  Piping.cpp
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.h(134,2): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(199,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(206,21): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(207,26): warning C4018:  '<': signed/unsigned mismatch
+  PipePlacement3D.vcxproj -> C:\Users\esrdc\Source\Repos\PipePlacement3D\Debug\PipePlacement3D.exe
