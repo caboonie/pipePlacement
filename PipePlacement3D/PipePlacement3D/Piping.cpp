@@ -124,8 +124,7 @@ double pipeCost(vector<pipe> pipes, vector<Header> headers, double pressureCoeff
 }
 */
 
-double pipeCost(vector<pipe> pipes, vector<Header> headers, double pressureCoeff) {
-	Header header1 = headers[0]; Header header2 = headers[1];
+double pipeCost(vector<pipe> pipes, vector<HeaderLoop> headers, double pressureCoeff) {
 	map<dTriple, vector<pipe>> intersectsPerNode;
 	double pressureSum = 0;
 	double weightSum = 0;
@@ -149,7 +148,7 @@ double pipeCost(vector<pipe> pipes, vector<Header> headers, double pressureCoeff
 			}
 			else {
 				intersectsPerNode.insert(pair < dTriple, vector<pipe>>(point, vector<pipe>{elt}));
-				if (header1.Y == point.Y || header2.Y == point.Y) { //if it connects to the header, add the header as an intersection
+				if (headers[0].intersects(point) || headers[1].intersects(point)) { //if it connects to the header, add the header as an intersection
 					intersectsPerNode.at(point).push_back(pipe(elt.start, elt.end, headerDiameter, headerLoad));
 				}
 			}

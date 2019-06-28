@@ -143,12 +143,40 @@ class Header
 public:
 	double X, Y, Z;
 	Direction direction;
-	Header() { X = 0; Y = 0; Z = 0;};
+	Header() { X = 0; Y = 0; Z = 0; direction = Direction::X_AXIS; };
 	Header(const double& nX, const double& nY, const double& nZ, Direction ndirection) {
 		X = nX; Y = nY; Z = nZ; direction = ndirection;
 	}
 };
 
+class HeaderLoop {
+public:
+	vector<pipe> pipes;
+	HeaderLoop(const vector<pipe>& npipes) {
+		pipes = npipes;
+	}
+	bool intersects(dTriple point) {
+		for (pipe elt : pipes) {
+			if (point.Y == elt.start.Y && point.Z == elt.start.Z) {
+				if (elt.start.X <= point.X && elt.end.X >= point.X)
+					return true;
+				if (elt.start.X >= point.X && elt.end.X <= point.X)
+					return true;
+			}
+		}
+		return false;
+	}
+	pipe pipeInX(double X) {
+		for (pipe elt : pipes) {
+			if (elt.start.X <= X && elt.end.X >= X)
+				return elt;
+			if (elt.start.X >= X && elt.end.X <= X)
+				return elt;
+		}
+		cout << "Error - could not find header\n";
+		return pipes[0];
+	}
+};
 
 
 //double pipeWeight(vector<pipe> pipes, vector<Header> headers);
@@ -157,6 +185,6 @@ void printPipes(vector<pipe> pipes);
 bool samePipe(pipe pipe1, pipe pipe2);
 double pipeLength(pipe elt);
 bool compPipeDiameter(pipe pipe1, pipe pipe2);
-double pipeCost(vector<pipe> pipes, vector<Header> headers, double pressureCoeff = .001);
+double pipeCost(vector<pipe> pipes, vector<HeaderLoop> headers, double pressureCoeff = .001);
 double colocationPentalty(vector<vector<Component>>& groups, vector<vector<Component>>& colocationGroups);
 

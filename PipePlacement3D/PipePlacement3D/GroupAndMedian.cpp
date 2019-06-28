@@ -77,7 +77,7 @@ bool groupsUnderLoad(vector<vector<Component>> groups, double maxLoad) {
 	return true;
 }
 
-vector<pipe> makePipesForGroup(vector<Component> components, vector<Header> headers) {
+vector<pipe> makePipesForGroup(vector<Component> components, vector<HeaderLoop> headers) {
 	//find the median of the group along x-axis - this is where the branch will connect to the group.
 	vector<pipe> pipes;
 	sort(components.begin(), components.end(), compareComponentZ);
@@ -117,22 +117,22 @@ vector<pipe> makePipesForGroup(vector<Component> components, vector<Header> head
 	pipe shortPipeToAnyZ;
 	//figure out what pipe to use to connect the branch to the header.
 	//for the length of the branch figure out the part closest to any header - for two lists of pipes, find the points closest
-	for (Header header : headers) {
+	for (HeaderLoop header : headers) {
 		double shortToHeader = INFINITY;
 		pipe shortPipeToHeaderY;
 		pipe shortPipeToHeaderZ;
-		
+		pipe headerPipe = header.pipeInX(medianX);
 
-		if (header.Y >= minY && header.Y <= maxY) {
+		if (headerPipe.start.Y >= minY && headerPipe.start.Y <= maxY) {
 			shortPipeToHeaderY = pipe(dTriple(0, 0, 0), dTriple(0, 0, 0), 0, 0);
-			shortPipeToHeaderZ = pipe(dTriple(medianX, header.Y, medianZ), dTriple(medianX, header.Y, header.Z), headerDiameter, headerLoad);
+			shortPipeToHeaderZ = pipe(dTriple(medianX, headerPipe.start.Y, medianZ), dTriple(medianX, headerPipe.start.Y, headerPipe.start.Z), headerDiameter, headerLoad);
 			shortToHeader = 0;
 		}
 		for (double Y : {minY, maxY}) {
-			if (abs(header.Y - Y) < shortToHeader) {
-				shortPipeToHeaderY = pipe(dTriple(medianX, header.Y, header.Z), dTriple(medianX, header.Y, medianZ), kWattLoadToDiameter(load), load);
-				shortPipeToHeaderZ = pipe(dTriple(medianX, header.Y, medianZ), dTriple(medianX, Y, medianZ), kWattLoadToDiameter(load), load);
-				shortToHeader = abs(header.Y - Y);
+			if (abs(headerPipe.start.Y - Y) < shortToHeader) {
+				shortPipeToHeaderY = pipe(dTriple(medianX, headerPipe.start.Y, headerPipe.start.Z), dTriple(medianX, headerPipe.start.Y, medianZ), kWattLoadToDiameter(load), load);
+				shortPipeToHeaderZ = pipe(dTriple(medianX, headerPipe.start.Y, medianZ), dTriple(medianX, Y, medianZ), kWattLoadToDiameter(load), load);
+				shortToHeader = abs(headerPipe.start.Y - Y);
 			}
 		}
 		if (hasVital) {
@@ -202,7 +202,7 @@ vector<pipe> makePipesBendHelper(vector<Component> components, double load, bool
 }
 
 
-vector<pipe> makePipesForGroupBend(vector<Component> components, vector<Header> headers, bool verbose = false) {
+vector<pipe> makePipesForGroupBend(vector<Component> components, vector<HeaderLoop> headers, bool verbose = false) {
 	//find a reasonable point to bend the branch pipe
 	if (components.size() == 1) { return makePipesForGroup(components, headers); }
 
@@ -278,11 +278,12 @@ vector<pipe> makePipesForGroupBend(vector<Component> components, vector<Header> 
 	double shortToAnyHeader = INFINITY;
 	pipe shortPipeToAnyY;
 	pipe shortPipeToAnyZ;
-	for (Header header : headers) {
+	for (HeaderLoop header : headers) {
 
 		double shortToHeader = INFINITY;
 		pipe shortPipeToHeaderY;
 		pipe shortPipeToHeaderZ;
+		pipe headerPipe = header.pipeInX(medianX);
 
 		if (header.Y >= minY && header.Y <= maxY) {
 			shortPipeToHeaderY = pipe(dTriple(0, 0, 0), dTriple(0,0,0), 0, 0);
@@ -392,8 +393,7 @@ vector<vector<Component>> stochasticStep(vector<vector<Component>>& groups, doub
 
 
 
-double groupWeight(vector<vector<Component>>& groups, vector<Header>& headers) { //consider memoizing for speed?
-	Header header1 = headers[0]; Header header2 = headers[1];
+double groupWeight(vector<vector<Component>>& groups, vector<HeaderLoop>& headers) { //consider memoizing for speed?
 	double cost = 0;
 	//cout << "start groupWeight\n";
 	for (vector<Component> group : groups) {
