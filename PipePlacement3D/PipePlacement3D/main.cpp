@@ -14,8 +14,8 @@
 using namespace std;
 
 int main() {
-	Header header1 = Header(0, 10, 0, Direction::X_AXIS);
-	Header header2 = Header(0, 0, 0, Direction::X_AXIS);
+	//Header header1 = Header(0, 10, 0, Direction::X_AXIS);
+	//Header header2 = Header(0, 0, 0, Direction::X_AXIS);
 	//Component a(3, 4, 10);
 	Component a(3, 4, 4, 10);
 	Component b(4, 5, 5, 4);
@@ -25,10 +25,20 @@ int main() {
 	Component f(6, 3.5, 0, 3.5);
 
 	vector<Component> components = { a,b,c,d,e,f };
-	vector<Header> headers = { header1, header2 };
+	//vector<Header> headers = { header1, header2 };
 	clock_t c_start = clock();
 
+	pipe header1 = pipe(dTriple(0, 5, 5), dTriple(20, 5, 5), headerDiameter, headerLoad);
+	pipe header2 = pipe(dTriple(20, 8, 5), dTriple(40, 8, 5), headerDiameter, headerLoad);
+	pipe header3 = pipe(dTriple(40, 10, 5), dTriple(100, 10, 5), headerDiameter, headerLoad);
+	HeaderLoop headerLoop1(vector<pipe>{header1, header2, header3});
 
+	pipe header4 = pipe(dTriple(0, -5, 5), dTriple(20, -5, 5), headerDiameter, headerLoad);
+	pipe header5 = pipe(dTriple(20, -8, 5), dTriple(40, -8, 5), headerDiameter, headerLoad);
+	pipe header6 = pipe(dTriple(40, -10, 5), dTriple(100, -10, 5), headerDiameter, headerLoad);
+	HeaderLoop headerLoop2(vector<pipe>{header4, header5, header6});
+
+	vector<HeaderLoop> headers = { headerLoop1, headerLoop2 };
 
 	vector<pipe> pipesGroup = makePipesGroup(components, headers, headerLoad, 40, 40);
 	cout << "CPU time used: " << 1000.0 * (clock() - c_start) / CLOCKS_PER_SEC << " ms\n";
@@ -43,9 +53,9 @@ int main() {
 	//printTable(table);
 	components = parseComponents(table); // , 6, 7, 8, 9, 3);
 
-	header1 = Header(0, 8, 2, Direction::X_AXIS);
-	header2 = Header(0, -8, 8, Direction::X_AXIS);
-	headers = { header1, header2 };
+	//header1 = Header(0, 8, 2, Direction::X_AXIS);
+	//header2 = Header(0, -8, 8, Direction::X_AXIS);
+	//headers = { header1, header2 };
 
 	vector < vector <Component>> zones = partitionComponents(components, vector<double>{42.5, 75, 107.5});
 	vector<pipe> allPipes;

@@ -126,13 +126,13 @@ vector<pipe> makePipesForGroup(vector<Component> components, vector<HeaderLoop> 
 		if (headerPipe.start.Y >= minY && headerPipe.start.Y <= maxY) {
 			shortPipeToHeaderY = pipe(dTriple(0, 0, 0), dTriple(0, 0, 0), 0, 0);
 			shortPipeToHeaderZ = pipe(dTriple(medianX, headerPipe.start.Y, medianZ), dTriple(medianX, headerPipe.start.Y, headerPipe.start.Z), headerDiameter, headerLoad);
-			shortToHeader = 0;
+			shortToHeader = abs(headerPipe.start.Z-medianZ);
 		}
 		for (double Y : {minY, maxY}) {
-			if (abs(headerPipe.start.Y - Y) < shortToHeader) {
+			if (abs(headerPipe.start.Y - Y) + abs(headerPipe.start.Z - medianZ) < shortToHeader) {
 				shortPipeToHeaderY = pipe(dTriple(medianX, headerPipe.start.Y, headerPipe.start.Z), dTriple(medianX, headerPipe.start.Y, medianZ), kWattLoadToDiameter(load), load);
 				shortPipeToHeaderZ = pipe(dTriple(medianX, headerPipe.start.Y, medianZ), dTriple(medianX, Y, medianZ), kWattLoadToDiameter(load), load);
-				shortToHeader = abs(headerPipe.start.Y - Y);
+				shortToHeader = abs(headerPipe.start.Y - Y) + abs(headerPipe.start.Z - medianZ);
 			}
 		}
 		if (hasVital) {
@@ -278,28 +278,33 @@ vector<pipe> makePipesForGroupBend(vector<Component> components, vector<HeaderLo
 	double shortToAnyHeader = INFINITY;
 	pipe shortPipeToAnyY;
 	pipe shortPipeToAnyZ;
-	for (HeaderLoop header : headers) {
+	vector<double> medianXs = { firstMedianX,lastMedianX };
+	vector<double> medianZs = { firstMedianZ,lastMedianZ };
+
+	for (int i = 0; i < headers.size(); i++){
+		HeaderLoop header = headers[i];
+		double medianX = medianXs[i];
 
 		double shortToHeader = INFINITY;
 		pipe shortPipeToHeaderY;
 		pipe shortPipeToHeaderZ;
 		pipe headerPipe = header.pipeInX(medianX);
 
-		if (header.Y >= minY && header.Y <= maxY) {
+		if (headerPipe.start.Y >= minY && headerPipe.start.Y <= maxY) {
 			shortPipeToHeaderY = pipe(dTriple(0, 0, 0), dTriple(0,0,0), 0, 0);
-			shortPipeToHeaderZ = pipe(dTriple(0, 0, 0), dTriple(0, 0, 0), 0, 0);
+			shortPipeToHeaderZ = pipe(dTriple(medianX, headerPipe.start.Y, medianZs[i]), dTriple(medianX, headerPipe.start.Y, headerPipe.start.Z), headerDiameter, headerLoad);
 			shortToHeader = 0;
 		}
 
-		if (abs(header.Y - minY) < shortToHeader) {
-			shortPipeToHeaderY = pipe(dTriple(firstMedianX, header.Y, header.Z), dTriple(firstMedianX, header.Y, firstMedianZ), kWattLoadToDiameter(load), load);
-			shortPipeToHeaderZ = pipe(dTriple(firstMedianX, header.Y, firstMedianZ), dTriple(firstMedianX, minY, firstMedianZ), kWattLoadToDiameter(load), load);
-			shortToHeader = abs(header.Y - minY);
+		if (abs(headerPipe.start.Y - minY) + abs(headerPipe.start.Z - firstMedianZ) < shortToHeader) {
+			shortPipeToHeaderY = pipe(dTriple(firstMedianX, headerPipe.start.Y, headerPipe.start.Z), dTriple(firstMedianX, headerPipe.start.Y, firstMedianZ), kWattLoadToDiameter(load), load);
+			shortPipeToHeaderZ = pipe(dTriple(firstMedianX, headerPipe.start.Y, firstMedianZ), dTriple(firstMedianX, minY, firstMedianZ), kWattLoadToDiameter(load), load);
+			shortToHeader = abs(headerPipe.start.Y - minY)+ abs(headerPipe.start.Z - firstMedianZ);
 		}
-		if (abs(header.Y - maxY) < shortToHeader) {
-			shortPipeToHeaderY = pipe(dTriple(lastMedianX, header.Y, header.Z), dTriple(lastMedianX, header.Y, lastMedianZ), kWattLoadToDiameter(load), load);
-			shortPipeToHeaderZ = pipe(dTriple(lastMedianX, header.Y, lastMedianZ), dTriple(lastMedianX, maxY, lastMedianZ), kWattLoadToDiameter(load), load);
-			shortToHeader = abs(header.Y - maxY);
+		if (abs(headerPipe.start.Y - maxY) + abs(headerPipe.start.Z - lastMedianZ) < shortToHeader) {
+			shortPipeToHeaderY = pipe(dTriple(lastMedianX, headerPipe.start.Y, headerPipe.start.Z), dTriple(lastMedianX, headerPipe.start.Y, lastMedianZ), kWattLoadToDiameter(load), load);
+			shortPipeToHeaderZ = pipe(dTriple(lastMedianX, headerPipe.start.Y, lastMedianZ), dTriple(lastMedianX, maxY, lastMedianZ), kWattLoadToDiameter(load), load);
+			shortToHeader = abs(headerPipe.start.Y - minY) + abs(headerPipe.start.Z - firstMedianZ);
 		}
 		if (hasVital) {
 			pipes.push_back(shortPipeToHeaderY);
@@ -319,9 +324,8 @@ vector<pipe> makePipesForGroupBend(vector<Component> components, vector<HeaderLo
 
 	vector<pipe> validPipes;
 	for (pipe elt : pipes) {
-		if (pipeLength(elt) > .02) {
+		if (pipeLength(elt) > .02) 
 			validPipes.push_back(elt);
-		}
 	}
 	return validPipes;
 }
@@ -452,7 +456,7 @@ vector<vector<Component>> randomInit(vector<Component> components) {
 	return newGroups;
 }
 
-vector<vector<Component>> medianFix(vector<vector<Component>>& groups, vector<Component> components, vector<Header> headers) {
+vector<vector<Component>> medianFix(vector<vector<Component>>& groups, vector<Component> components, vector<HeaderLoop> headers) {
 	vector<double> medians;
 	vector<pair<double, double>> pipeEnds;
 	vector<vector<Component>> newGroups;
@@ -470,26 +474,13 @@ vector<vector<Component>> medianFix(vector<vector<Component>>& groups, vector<Co
 				hasVital = true;
 			}
 		}
-
+		
 
 		double minY = group[0].getY();
 		double maxY = group[group.size() - 1].getY();
 
-		double shortToAnyHeader = INFINITY;
-		Header headerUsed;
-		for (Header header : headers) {
-			for (double Y : {minY, maxY}) {
-				if (abs(header.Y - Y) < shortToAnyHeader) {
-					headerUsed = header;
-					shortToAnyHeader = abs(header.Y - Y);
-				}
-			}
-		}
-
-		vector<double> possibleEnds = { headerUsed.Y,minY,maxY };
-		if (hasVital) {
-			possibleEnds = { headers[0].Y,headers[1].Y,minY,maxY };
-		}
+		vector<double> possibleEnds = { headers[0].pipeInX(medianX).start.Y,headers[1].pipeInX(medianX).start.Y,minY,maxY };
+		
 		sort(possibleEnds.begin(), possibleEnds.end());
 		pipeEnds.push_back(pair<double, double>(possibleEnds[0], possibleEnds[possibleEnds.size() - 1]));
 
@@ -568,7 +559,7 @@ vector<vector<Component>> medianConsolidate(vector<vector<Component>>& groups) {
 
 
 
-vector<vector<Component>> climb(vector<vector<Component>>& groups, vector<Component> components, vector<Header> headers, double maxLoad, int maxEvals = 10, int maxIters = 10, double stayProb = .9) {
+vector<vector<Component>> climb(vector<vector<Component>>& groups, vector<Component> components, vector<HeaderLoop> headers, double maxLoad, int maxEvals = 10, int maxIters = 10, double stayProb = .9) {
 	clock_t climb_start = clock();
 
 	double bestScore = groupWeight(groups, headers);
@@ -727,7 +718,7 @@ vector<vector<Component>> medianInit(vector<Component> components) {
 
 
 
-vector<pipe> makePipesGroup(vector<Component > components, vector<Header> headers, double maxLoad, int maxEvals = 10, int maxIters = 10, double stayProb = .9) {
+vector<pipe> makePipesGroup(vector<Component > components, vector<HeaderLoop> headers, double maxLoad, int maxEvals = 10, int maxIters = 10, double stayProb = .9) {
 	srand(time(0));
 	timeMakingPipes = 0;
 	timeStochasticStep = 0;
@@ -769,7 +760,7 @@ vector<pipe> makePipesGroup(vector<Component > components, vector<Header> header
 	return pipes;
 }
 
-vector<vector<Component>> makeGroupsGroup(vector<Component > components, vector<Header> headers, double maxLoad, int maxEvals = 10, int maxIters = 10, double stayProb = .9) {
+vector<vector<Component>> makeGroupsGroup(vector<Component > components, vector<HeaderLoop> headers, double maxLoad, int maxEvals = 10, int maxIters = 10, double stayProb = .9) {
 	srand(time(0));
 	timeMakingPipes = 0;
 	timeStochasticStep = 0;

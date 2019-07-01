@@ -32,7 +32,7 @@ void writePipeToCsv(string filename, vector<pipe> pipes, vector<Component> compo
 	file.close();
 }
 
-void writeGroupsToCsv(string filename, vector<vector<Component>> groups, vector<Header> headers, vector<Component> components) {
+void writeGroupsToCsv(string filename, vector<vector<Component>> groups, vector<HeaderLoop> headers, vector<Component> components) {
 	// File pointer 
 	ofstream file;
 
