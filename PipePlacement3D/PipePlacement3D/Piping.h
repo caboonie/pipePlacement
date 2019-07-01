@@ -45,7 +45,7 @@ struct dTriple {
 			return this->Y < Ref.Y;
 		}
 		return this->X < Ref.X;
-	} 
+	}
 	void print() {
 		cout << "(" << X << ", " << Y << "," << Z << ")";
 	}
@@ -106,10 +106,10 @@ public:
 			return this->Y < Ref.Y;
 		}
 		return this->X < Ref.X;
-	} 
+	}
 	bool operator==(const Component& other) const
 	{
-		return flow == other.flow && X == other.X && Y == other.Y && Z== other.Z && vital == other.vital;
+		return flow == other.flow && X == other.X && Y == other.Y && Z == other.Z && vital == other.vital;
 	}
 };
 
@@ -185,6 +185,6 @@ void printPipes(vector<pipe> pipes);
 bool samePipe(pipe pipe1, pipe pipe2);
 double pipeLength(pipe elt);
 bool compPipeDiameter(pipe pipe1, pipe pipe2);
-double pipeCost(vector<pipe> pipes, vector<HeaderLoop> headers, double pressureCoeff = .001);
+double pipeCost(vector<pipe> pipes, vector<HeaderLoop> headers, double pressureCoeff = .0001);
 double colocationPentalty(vector<vector<Component>>& groups, vector<vector<Component>>& colocationGroups);
 

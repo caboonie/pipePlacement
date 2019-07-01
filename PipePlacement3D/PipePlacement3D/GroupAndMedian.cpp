@@ -104,7 +104,7 @@ vector<pipe> makePipesForGroup(vector<Component> components, vector<HeaderLoop> 
 		pipes.push_back(pipe(dTriple(medianX, component.getY(), component.getZ()), dTriple(component.getX(), component.getY(), component.getZ()), kWattLoadToDiameter(component.getFlow()), component.getFlow()));
 
 		if (component.getY() != lastY) {
-			pipes.push_back(pipe(dTriple(medianX, lastY,medianZ), dTriple(medianX, component.getY(), medianZ), kWattLoadToDiameter(load), load));
+			pipes.push_back(pipe(dTriple(medianX, lastY, medianZ), dTriple(medianX, component.getY(), medianZ), kWattLoadToDiameter(load), load));
 		}
 		lastY = component.getY();
 	}
@@ -126,7 +126,7 @@ vector<pipe> makePipesForGroup(vector<Component> components, vector<HeaderLoop> 
 		if (headerPipe.start.Y >= minY && headerPipe.start.Y <= maxY) {
 			shortPipeToHeaderY = pipe(dTriple(0, 0, 0), dTriple(0, 0, 0), 0, 0);
 			shortPipeToHeaderZ = pipe(dTriple(medianX, headerPipe.start.Y, medianZ), dTriple(medianX, headerPipe.start.Y, headerPipe.start.Z), headerDiameter, headerLoad);
-			shortToHeader = abs(headerPipe.start.Z-medianZ);
+			shortToHeader = abs(headerPipe.start.Z - medianZ);
 		}
 		for (double Y : {minY, maxY}) {
 			if (abs(headerPipe.start.Y - Y) + abs(headerPipe.start.Z - medianZ) < shortToHeader) {
@@ -281,7 +281,7 @@ vector<pipe> makePipesForGroupBend(vector<Component> components, vector<HeaderLo
 	vector<double> medianXs = { firstMedianX,lastMedianX };
 	vector<double> medianZs = { firstMedianZ,lastMedianZ };
 
-	for (int i = 0; i < headers.size(); i++){
+	for (int i = 0; i < headers.size(); i++) {
 		HeaderLoop header = headers[i];
 		double medianX = medianXs[i];
 
@@ -291,7 +291,7 @@ vector<pipe> makePipesForGroupBend(vector<Component> components, vector<HeaderLo
 		pipe headerPipe = header.pipeInX(medianX);
 
 		if (headerPipe.start.Y >= minY && headerPipe.start.Y <= maxY) {
-			shortPipeToHeaderY = pipe(dTriple(0, 0, 0), dTriple(0,0,0), 0, 0);
+			shortPipeToHeaderY = pipe(dTriple(0, 0, 0), dTriple(0, 0, 0), 0, 0);
 			shortPipeToHeaderZ = pipe(dTriple(medianX, headerPipe.start.Y, medianZs[i]), dTriple(medianX, headerPipe.start.Y, headerPipe.start.Z), headerDiameter, headerLoad);
 			shortToHeader = 0;
 		}
@@ -299,7 +299,7 @@ vector<pipe> makePipesForGroupBend(vector<Component> components, vector<HeaderLo
 		if (abs(headerPipe.start.Y - minY) + abs(headerPipe.start.Z - firstMedianZ) < shortToHeader) {
 			shortPipeToHeaderY = pipe(dTriple(firstMedianX, headerPipe.start.Y, headerPipe.start.Z), dTriple(firstMedianX, headerPipe.start.Y, firstMedianZ), kWattLoadToDiameter(load), load);
 			shortPipeToHeaderZ = pipe(dTriple(firstMedianX, headerPipe.start.Y, firstMedianZ), dTriple(firstMedianX, minY, firstMedianZ), kWattLoadToDiameter(load), load);
-			shortToHeader = abs(headerPipe.start.Y - minY)+ abs(headerPipe.start.Z - firstMedianZ);
+			shortToHeader = abs(headerPipe.start.Y - minY) + abs(headerPipe.start.Z - firstMedianZ);
 		}
 		if (abs(headerPipe.start.Y - maxY) + abs(headerPipe.start.Z - lastMedianZ) < shortToHeader) {
 			shortPipeToHeaderY = pipe(dTriple(lastMedianX, headerPipe.start.Y, headerPipe.start.Z), dTriple(lastMedianX, headerPipe.start.Y, lastMedianZ), kWattLoadToDiameter(load), load);
@@ -324,7 +324,7 @@ vector<pipe> makePipesForGroupBend(vector<Component> components, vector<HeaderLo
 
 	vector<pipe> validPipes;
 	for (pipe elt : pipes) {
-		if (pipeLength(elt) > .02) 
+		if (pipeLength(elt) > .02)
 			validPipes.push_back(elt);
 	}
 	return validPipes;
@@ -474,13 +474,13 @@ vector<vector<Component>> medianFix(vector<vector<Component>>& groups, vector<Co
 				hasVital = true;
 			}
 		}
-		
+
 
 		double minY = group[0].getY();
 		double maxY = group[group.size() - 1].getY();
 
 		vector<double> possibleEnds = { headers[0].pipeInX(medianX).start.Y,headers[1].pipeInX(medianX).start.Y,minY,maxY };
-		
+
 		sort(possibleEnds.begin(), possibleEnds.end());
 		pipeEnds.push_back(pair<double, double>(possibleEnds[0], possibleEnds[possibleEnds.size() - 1]));
 
@@ -606,6 +606,7 @@ vector<vector<Component>> climb(vector<vector<Component>>& groups, vector<Compon
 		*/
 	}
 	cout << "time spend in climb: " << (clock() - climb_start) << "\n";
+	cout << "best score " << bestScore << "\n";
 	return bestGroups;
 }
 
@@ -732,7 +733,7 @@ vector<pipe> makePipesGroup(vector<Component > components, vector<HeaderLoop> he
 	//groups = medianConsolidate(groups);
 	//printGroups(groups);
 
-	
+
 	vector<pipe> pipes;
 	for (vector<Component> group : groups) {
 		vector<pipe> groupPipes = makePipesForGroup(group, headers);

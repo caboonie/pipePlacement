@@ -1,6 +1,35 @@
-﻿  Piping.cpp
+﻿  GroupAndMedian.cpp
 C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.h(134,2): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(199,20): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(206,21): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(207,26): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(31,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(57,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(225,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(249,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(261,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(284,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(348,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(372,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(376,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(443,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(495,21): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(526,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(536,21): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(616,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(700,16): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(701,21): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(723,12): warning C4244:  'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Piping.cpp
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(765,12): warning C4244:  'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.h(134,2): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(198,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(205,21): warning C4018:  '<': signed/unsigned mismatch
+  csvParse.cpp
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.cpp(206,26): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.h(134,2): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\csvParse.cpp(120,27): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\csvParse.cpp(135,20): warning C4018:  '<=': signed/unsigned mismatch
+  main.cpp
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\csvParse.cpp(143,21): warning C4018:  '<': signed/unsigned mismatch
+  Generating Code...
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.h(134,2): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\Piping.h(134,2): warning C4018: C:\Users\esrdc\Source\Repos\PipePlacement3D\PipePlacement3D\GroupAndMedian.cpp(63) : warning C4715: 'weighted_median': not all control paths return a value
   PipePlacement3D.vcxproj -> C:\Users\esrdc\Source\Repos\PipePlacement3D\Debug\PipePlacement3D.exe

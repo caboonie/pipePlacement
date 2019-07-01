@@ -137,7 +137,7 @@ double pipeCost(vector<pipe> pipes, vector<HeaderLoop> headers, double pressureC
 			pressureSum += resistance(elt.diameter, length);
 			weightSum += weight(elt.diameter, length);
 		}
-		
+
 		if (Xlength != 0 && Ylength != 0) {
 			pressureSum += bendResistance(elt.diameter);
 		}

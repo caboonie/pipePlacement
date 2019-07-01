@@ -28,14 +28,14 @@ int main() {
 	//vector<Header> headers = { header1, header2 };
 	clock_t c_start = clock();
 
-	pipe header1 = pipe(dTriple(0, 5, 5), dTriple(20, 5, 5), headerDiameter, headerLoad);
-	pipe header2 = pipe(dTriple(20, 8, 5), dTriple(40, 8, 5), headerDiameter, headerLoad);
-	pipe header3 = pipe(dTriple(40, 10, 5), dTriple(100, 10, 5), headerDiameter, headerLoad);
+	pipe header1 = pipe(dTriple(0, 5, 2), dTriple(20, 5, 5), headerDiameter, headerLoad);
+	pipe header2 = pipe(dTriple(20, 8, 2), dTriple(40, 8, 5), headerDiameter, headerLoad);
+	pipe header3 = pipe(dTriple(40, 10, 2), dTriple(200, 10, 5), headerDiameter, headerLoad);
 	HeaderLoop headerLoop1(vector<pipe>{header1, header2, header3});
 
-	pipe header4 = pipe(dTriple(0, -5, 5), dTriple(20, -5, 5), headerDiameter, headerLoad);
-	pipe header5 = pipe(dTriple(20, -8, 5), dTriple(40, -8, 5), headerDiameter, headerLoad);
-	pipe header6 = pipe(dTriple(40, -10, 5), dTriple(100, -10, 5), headerDiameter, headerLoad);
+	pipe header4 = pipe(dTriple(0, -5, 8), dTriple(20, -5, 5), headerDiameter, headerLoad);
+	pipe header5 = pipe(dTriple(20, -8, 8), dTriple(40, -8, 5), headerDiameter, headerLoad);
+	pipe header6 = pipe(dTriple(40, -10, 8), dTriple(200, -10, 5), headerDiameter, headerLoad);
 	HeaderLoop headerLoop2(vector<pipe>{header4, header5, header6});
 
 	vector<HeaderLoop> headers = { headerLoop1, headerLoop2 };
@@ -45,7 +45,7 @@ int main() {
 	//printPipes(pipesGroup);
 	cout << "Total pipe cost: " << pipeCost(pipesGroup, headers) << "\n";
 
-	writePipeToCsv("testPipesSmall.csv", pipesGroup, components);
+	writePipeToCsv("testPipesSmallTest.csv", pipesGroup, components);
 
 
 	//real data example:
@@ -86,7 +86,7 @@ int main() {
 
 	//writePipeToCsv("testPipes.csv", allPipes, components);
 	writeGroupsToCsv("testPipes.csv", allGroups, headers, components);
-	
+
 
 	/* Experiment MedianFix or no
 	// File pointer
